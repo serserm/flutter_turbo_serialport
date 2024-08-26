@@ -1,0 +1,27 @@
+name: turboserialport_example
+description: "Demonstrates how to use the turboserialport plugin."
+publish_to: 'none'
+
+environment:
+  sdk: '>=3.4.4 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  flutter_turbo_serialport:
+    path: ../
+
+  cupertino_icons: ^1.0.6
+
+dev_dependencies:
+  integration_test:
+    sdk: flutter
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^4.0.0
+
+flutter:
+
+  uses-material-design: true
