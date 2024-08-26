@@ -1,0 +1,1 @@
+flutter pub run pigeon --input pigeons/turbo_serialport.dart
