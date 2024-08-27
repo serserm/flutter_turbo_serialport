@@ -3,7 +3,7 @@ description: "This is a plugin for communication with Arduinos and other USB ser
 repository: https://github.com/serserm/flutter_turbo_serialport
 homepage: https://github.com/serserm/flutter_turbo_serialport
 issue_tracker: https://github.com/serserm/flutter_turbo_serialport/issues
-version: 1.0.0
+version: 1.0.1
 
 environment:
   sdk: '>=3.4.4 <4.0.0'
