@@ -6,6 +6,12 @@ import 'event_listener.dart';
 import 'turbo_serialport.g.dart';
 import 'types/types.dart';
 
+/// ## Example
+/// ```dart
+/// class _HomePageState extends State<HomePage> {
+///   final _instance = SerialportController();
+/// }
+/// ```
 class SerialportController extends TurboSerialportListener {
   SerialportController._();
 
@@ -31,6 +37,23 @@ class SerialportController extends TurboSerialportListener {
     }
   }
 
+  /// ## Example
+  /// ```dart
+  /// SerialportController().init(
+  ///   autoConnect: false,
+  ///   mode: Mode.$async,
+  ///   params: Params(
+  ///     driver: DriverType.$auto,
+  ///     portInterface: -1, // all ports
+  ///     returnedDataType: ReturnedDataType.$utf8,
+  ///     baudRate: BaudRate.$9600,
+  ///     dataBit: DataBit.$8,
+  ///     stopBit: StopBit.$1,
+  ///     parity: Parity.$none,
+  ///     flowControl: FlowControl.$off,
+  ///   ),
+  /// );
+  /// ```
   void init({
     bool? autoConnect,
     Mode? mode,
@@ -38,18 +61,29 @@ class SerialportController extends TurboSerialportListener {
   }) {
     _api.init(
       autoConnect ?? false,
-      mode?.value ?? Mode.$async.value,
-      params?.driver?.value ?? DriverType.$auto.value,
+      mode?.value ?? Mode.getDefault.value,
+      params?.driver?.value ?? DriverType.getDefault.value,
       params?.portInterface ?? -1,
-      params?.returnedDataType?.value ?? ReturnedDataType.$utf8.value,
-      params?.baudRate?.value ?? BaudRate.$9600.value,
-      params?.dataBit?.value ?? DataBit.$8.value,
-      params?.stopBit?.value ?? StopBit.$1.value,
-      params?.parity?.value ?? Parity.$none.value,
-      params?.flowControl?.value ?? FlowControl.$off.value,
+      params?.returnedDataType?.value ?? ReturnedDataType.getDefault.value,
+      params?.baudRate?.value ?? BaudRate.getDefault.value,
+      params?.dataBit?.value ?? DataBit.getDefault.value,
+      params?.stopBit?.value ?? StopBit.getDefault.value,
+      params?.parity?.value ?? Parity.getDefault.value,
+      params?.flowControl?.value ?? FlowControl.getDefault.value,
     );
   }
 
+  /// ## Example
+  /// ```dart
+  /// _subscribe = SerialportController().addListeners(
+  ///   onReadData: onReadData,
+  ///   onError: onError,
+  ///   onConnected: onConnected,
+  ///   onDisconnected: onDisconnected,
+  ///   onDeviceAttached: onSearch,
+  ///   onDeviceDetached: onSearch,
+  /// );
+  /// ```
   Function addListeners({
     OnReadData? onReadData,
     OnError? onError,
@@ -83,41 +117,97 @@ class SerialportController extends TurboSerialportListener {
     };
   }
 
+  /// ## Example
+  /// ```dart
+  /// SerialportController().setParams(
+  ///   deviceId: deviceId,
+  ///   params: Params(
+  ///     driver: DriverType.$auto,
+  ///     portInterface: -1, // all ports
+  ///     returnedDataType: ReturnedDataType.$utf8,
+  ///     baudRate: BaudRate.$9600,
+  ///     dataBit: DataBit.$8,
+  ///     stopBit: StopBit.$1,
+  ///     parity: Parity.$none,
+  ///     flowControl: FlowControl.$off,
+  ///   ),
+  /// );
+  /// ```
   void setParams({Params? params, int? deviceId}) {
     _api.setParams(
       deviceId ?? -1,
-      params?.driver?.value ?? DriverType.$auto.value,
+      params?.driver?.value ?? DriverType.getDefault.value,
       params?.portInterface ?? -1,
-      params?.returnedDataType?.value ?? ReturnedDataType.$utf8.value,
-      params?.baudRate?.value ?? BaudRate.$9600.value,
-      params?.dataBit?.value ?? DataBit.$8.value,
-      params?.stopBit?.value ?? StopBit.$1.value,
-      params?.parity?.value ?? Parity.$none.value,
-      params?.flowControl?.value ?? FlowControl.$off.value,
+      params?.returnedDataType?.value ?? ReturnedDataType.getDefault.value,
+      params?.baudRate?.value ?? BaudRate.getDefault.value,
+      params?.dataBit?.value ?? DataBit.getDefault.value,
+      params?.stopBit?.value ?? StopBit.getDefault.value,
+      params?.parity?.value ?? Parity.getDefault.value,
+      params?.flowControl?.value ?? FlowControl.getDefault.value,
     );
   }
 
+  /// ## Example
+  /// ```dart
+  /// SerialportController().listDevices().then((List<Device> res) {
+  ///   // TODO
+  /// });
+  /// ```
   Future<List<Device>> listDevices() async {
     List<SerialportDevice?> res = await _api.listDevices();
     return res.cast<Device>();
   }
 
+  /// ## Example
+  /// ```dart
+  /// SerialportController().connect(
+  ///   deviceId: deviceId,
+  /// );
+  /// ```
   void connect({int? deviceId}) {
     _api.connect(deviceId ?? -1);
   }
 
+  /// ## Example
+  /// ```dart
+  /// SerialportController().disconnect(
+  ///   deviceId: deviceId,
+  /// );
+  /// ```
   void disconnect({int? deviceId}) {
     _api.disconnect(deviceId ?? -1);
   }
 
+  /// ## Example
+  /// ```dart
+  /// SerialportController().isConnected(
+  ///   deviceId: deviceId,
+  /// ).then((bool res) {
+  ///   // TODO
+  /// });
+  /// ```
   Future<bool> isConnected({int? deviceId}) {
     return _api.isConnected(deviceId ?? -1);
   }
 
+  /// ## Example
+  /// ```dart
+  /// SerialportController().isServiceStarted().then((bool res) {
+  ///   // TODO
+  /// });
+  /// ```
   Future<bool> isServiceStarted() {
     return _api.isServiceStarted();
   }
 
+  /// ## Example
+  /// ```dart
+  /// SerialportController().writeBytes(
+  ///   message: message,
+  ///   deviceId: deviceId,
+  ///   portInterface: portInterface,
+  /// );
+  /// ```
   void writeBytes({
     required Uint8List message,
     int? deviceId,
@@ -130,6 +220,14 @@ class SerialportController extends TurboSerialportListener {
     );
   }
 
+  /// ## Example
+  /// ```dart
+  /// SerialportController().writeString(
+  ///   message: message,
+  ///   deviceId: deviceId,
+  ///   portInterface: portInterface,
+  /// );
+  /// ```
   void writeString({
     required String message,
     int? deviceId,
@@ -142,6 +240,14 @@ class SerialportController extends TurboSerialportListener {
     );
   }
 
+  /// ## Example
+  /// ```dart
+  /// SerialportController().writeBase64(
+  ///   message: message,
+  ///   deviceId: deviceId,
+  ///   portInterface: portInterface,
+  /// );
+  /// ```
   void writeBase64({
     required String message,
     int? deviceId,
@@ -154,6 +260,14 @@ class SerialportController extends TurboSerialportListener {
     );
   }
 
+  /// ## Example
+  /// ```dart
+  /// SerialportController().writeHexString(
+  ///   message: message,
+  ///   deviceId: deviceId,
+  ///   portInterface: portInterface,
+  /// );
+  /// ```
   void writeHexString({
     required String message,
     int? deviceId,

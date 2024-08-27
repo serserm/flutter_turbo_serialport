@@ -1,3 +1,4 @@
+/// usb param: driver
 enum DriverType {
   $auto('AUTO'),
   $cdc('cdc'),
@@ -8,8 +9,10 @@ enum DriverType {
 
   final String value;
   const DriverType(this.value);
+  static DriverType getDefault = $auto;
 }
 
+/// usb param: baudRate
 enum BaudRate {
   $300(300),
   $600(600),
@@ -27,8 +30,10 @@ enum BaudRate {
 
   final int value;
   const BaudRate(this.value);
+  static BaudRate getDefault = $9600;
 }
 
+/// usb param: dataBit
 enum DataBit {
   $5(5),
   $6(6),
@@ -37,8 +42,10 @@ enum DataBit {
 
   final int value;
   const DataBit(this.value);
+  static DataBit getDefault = $8;
 }
 
+/// usb param: stopBit
 enum StopBit {
   $1(1),
   $2(2),
@@ -46,8 +53,10 @@ enum StopBit {
 
   final int value;
   const StopBit(this.value);
+  static StopBit getDefault = $1;
 }
 
+/// usb param: parity
 enum Parity {
   $none(0),
   $odd(1),
@@ -57,8 +66,10 @@ enum Parity {
 
   final int value;
   const Parity(this.value);
+  static Parity getDefault = $none;
 }
 
+/// usb param: flowControl
 enum FlowControl {
   $off(0),
   $rtsCts(1),
@@ -67,8 +78,10 @@ enum FlowControl {
 
   final int value;
   const FlowControl(this.value);
+  static FlowControl getDefault = $off;
 }
 
+/// usb param: returnedDataType
 enum ReturnedDataType {
   $intArray(1),
   $hexString(2),
@@ -76,16 +89,20 @@ enum ReturnedDataType {
 
   final int value;
   const ReturnedDataType(this.value);
+  static ReturnedDataType getDefault = $utf8;
 }
 
+/// serialport mode
 enum Mode {
   $async(0),
   $sync(1);
 
   final int value;
   const Mode(this.value);
+  static Mode getDefault = $async;
 }
 
+/// usb params
 class Params {
   Params({
     this.driver,

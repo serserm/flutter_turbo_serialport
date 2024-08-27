@@ -1,6 +1,11 @@
 import 'turbo_serialport.g.dart';
 import 'types/types.dart';
 
+/// controller listener
+/// ## Example
+/// ```dart
+/// final EventListener _listener = EventListener();
+/// ```
 class EventListener {
   final List<OnReadData> _onReadData = [];
   final List<OnError> _onError = [];
@@ -9,6 +14,17 @@ class EventListener {
   final List<OnDeviceAttached> _onDeviceAttached = [];
   final List<OnDeviceDetached> _onDeviceDetached = [];
 
+  /// ## Example
+  /// ```dart
+  /// _listener.add(
+  ///   onReadData: onReadData,
+  ///   onError: onError,
+  ///   onConnected: onConnected,
+  ///   onDisconnected: onDisconnected,
+  ///   onDeviceAttached: onDeviceAttached,
+  ///   onDeviceDetached: onDeviceDetached,
+  /// )
+  /// ```
   bool add({
     OnReadData? onReadData,
     OnError? onError,
@@ -45,6 +61,17 @@ class EventListener {
     return isAdd;
   }
 
+  /// ## Example
+  /// ```dart
+  /// _listener.remove(
+  ///   onReadData: onReadData,
+  ///   onError: onError,
+  ///   onConnected: onConnected,
+  ///   onDisconnected: onDisconnected,
+  ///   onDeviceAttached: onDeviceAttached,
+  ///   onDeviceDetached: onDeviceDetached,
+  /// )
+  /// ```
   bool remove({
     OnReadData? onReadData,
     OnError? onError,
@@ -83,6 +110,17 @@ class EventListener {
     return isRemove;
   }
 
+  /// ## Example
+  /// ```dart
+  /// @override
+  /// void serialportEvent(SerialportEvent event) {
+  ///   try {
+  ///     _listener.call(event);
+  ///   } catch (err) {
+  ///     rethrow;
+  ///   }
+  /// }
+  /// ```
   void call(SerialportEvent event) {
     switch (event.type) {
       case 'onReadData':

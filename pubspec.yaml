@@ -1,5 +1,5 @@
 name: flutter_turbo_serialport
-description: "Usb serial port communication for Android platform"
+description: "This is a plugin for communication with Arduinos and other USB serial hardware on Android, using the felHR85/UsbSerial"
 repository: https://github.com/serserm/flutter_turbo_serialport
 homepage: https://github.com/serserm/flutter_turbo_serialport
 issue_tracker: https://github.com/serserm/flutter_turbo_serialport/issues
@@ -12,7 +12,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  plugin_platform_interface: ^2.0.2
 
 dev_dependencies:
   flutter_test:
@@ -26,3 +25,8 @@ flutter:
       android:
         package: com.serserm.turboserialport
         pluginClass: TurboSerialportPlugin
+
+topics:
+  - android
+  - usb
+  - serialport
