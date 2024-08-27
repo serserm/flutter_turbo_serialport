@@ -72,7 +72,11 @@ public class PigeonSpec {
   @Retention(CLASS)
   @interface CanIgnoreReturnValue {}
 
-  /** Generated class from Pigeon that represents data sent in messages. */
+  /**
+   * native api: SerialportEvent
+   *
+   * Generated class from Pigeon that represents data sent in messages.
+   */
   public static final class SerialportEvent {
     private @Nullable String type;
 
@@ -263,7 +267,11 @@ public class PigeonSpec {
     }
   }
 
-  /** Generated class from Pigeon that represents data sent in messages. */
+  /**
+   * native api: SerialportDevice
+   *
+   * Generated class from Pigeon that represents data sent in messages.
+   */
   public static final class SerialportDevice {
     private @Nullable Boolean isSupported;
 
@@ -620,31 +628,31 @@ public class PigeonSpec {
   }
   /** Generated interface from Pigeon that represents a handler of messages from Flutter. */
   public interface TurboSerialport {
-
+    /** native api: addListener */
     void addListener();
-
+    /** native api: removeListener */
     void removeListener();
-
+    /** native api: init */
     void init(@NonNull Boolean autoConnect, @NonNull Long mode, @NonNull String driver, @NonNull Long portInterface, @NonNull Long returnedDataType, @NonNull Long baudRate, @NonNull Long dataBit, @NonNull Long stopBit, @NonNull Long parity, @NonNull Long flowControl);
-
+    /** native api: setParams */
     void setParams(@NonNull Long deviceId, @NonNull String driver, @NonNull Long portInterface, @NonNull Long returnedDataType, @NonNull Long baudRate, @NonNull Long dataBit, @NonNull Long stopBit, @NonNull Long parity, @NonNull Long flowControl);
-
+    /** native api: listDevices */
     void listDevices(@NonNull Result<List<SerialportDevice>> result);
-
+    /** native api: connect */
     void connect(@NonNull Long deviceId);
-
+    /** native api: disconnect */
     void disconnect(@NonNull Long deviceId);
-
+    /** native api: isConnected */
     void isConnected(@NonNull Long deviceId, @NonNull Result<Boolean> result);
-
+    /** native api: isServiceStarted */
     void isServiceStarted(@NonNull Result<Boolean> result);
-
+    /** native api: writeBytes */
     void writeBytes(@NonNull Long deviceId, @NonNull Long portInterface, @NonNull byte[] message);
-
+    /** native api: writeString */
     void writeString(@NonNull Long deviceId, @NonNull Long portInterface, @NonNull String message);
-
+    /** native api: writeBase64 */
     void writeBase64(@NonNull Long deviceId, @NonNull Long portInterface, @NonNull String message);
-
+    /** native api: writeHexString */
     void writeHexString(@NonNull Long deviceId, @NonNull Long portInterface, @NonNull String message);
 
     /** The codec used by TurboSerialport. */
@@ -1013,6 +1021,7 @@ public class PigeonSpec {
     static @NonNull MessageCodec<Object> getCodec() {
       return PigeonCodec.INSTANCE;
     }
+    /** native api: serialportEvent */
     public void serialportEvent(@NonNull SerialportEvent eventArg, @NonNull VoidResult result) {
       final String channelName = "dev.flutter.pigeon.flutter_turbo_serialport.TurboSerialportListener.serialportEvent" + messageChannelSuffix;
       BasicMessageChannel<Object> channel =

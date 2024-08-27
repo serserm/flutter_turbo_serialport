@@ -25,6 +25,7 @@ List<Object?> wrapResponse({Object? result, PlatformException? error, bool empty
   return <Object?>[error.code, error.message, error.details];
 }
 
+/// native api: SerialportEvent
 class SerialportEvent {
   SerialportEvent({
     this.type,
@@ -76,6 +77,7 @@ class SerialportEvent {
   }
 }
 
+/// native api: SerialportDevice
 class SerialportDevice {
   SerialportDevice({
     this.isSupported,
@@ -197,6 +199,7 @@ class TurboSerialport {
 
   final String pigeonVar_messageChannelSuffix;
 
+  /// native api: addListener
   Future<void> addListener() async {
     final String pigeonVar_channelName = 'dev.flutter.pigeon.flutter_turbo_serialport.TurboSerialport.addListener$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
@@ -219,6 +222,7 @@ class TurboSerialport {
     }
   }
 
+  /// native api: removeListener
   Future<void> removeListener() async {
     final String pigeonVar_channelName = 'dev.flutter.pigeon.flutter_turbo_serialport.TurboSerialport.removeListener$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
@@ -241,6 +245,7 @@ class TurboSerialport {
     }
   }
 
+  /// native api: init
   Future<void> init(bool autoConnect, int mode, String driver, int portInterface, int returnedDataType, int baudRate, int dataBit, int stopBit, int parity, int flowControl) async {
     final String pigeonVar_channelName = 'dev.flutter.pigeon.flutter_turbo_serialport.TurboSerialport.init$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
@@ -263,6 +268,7 @@ class TurboSerialport {
     }
   }
 
+  /// native api: setParams
   Future<void> setParams(int deviceId, String driver, int portInterface, int returnedDataType, int baudRate, int dataBit, int stopBit, int parity, int flowControl) async {
     final String pigeonVar_channelName = 'dev.flutter.pigeon.flutter_turbo_serialport.TurboSerialport.setParams$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
@@ -285,6 +291,7 @@ class TurboSerialport {
     }
   }
 
+  /// native api: listDevices
   Future<List<SerialportDevice?>> listDevices() async {
     final String pigeonVar_channelName = 'dev.flutter.pigeon.flutter_turbo_serialport.TurboSerialport.listDevices$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
@@ -312,6 +319,7 @@ class TurboSerialport {
     }
   }
 
+  /// native api: connect
   Future<void> connect(int deviceId) async {
     final String pigeonVar_channelName = 'dev.flutter.pigeon.flutter_turbo_serialport.TurboSerialport.connect$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
@@ -334,6 +342,7 @@ class TurboSerialport {
     }
   }
 
+  /// native api: disconnect
   Future<void> disconnect(int deviceId) async {
     final String pigeonVar_channelName = 'dev.flutter.pigeon.flutter_turbo_serialport.TurboSerialport.disconnect$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
@@ -356,6 +365,7 @@ class TurboSerialport {
     }
   }
 
+  /// native api: isConnected
   Future<bool> isConnected(int deviceId) async {
     final String pigeonVar_channelName = 'dev.flutter.pigeon.flutter_turbo_serialport.TurboSerialport.isConnected$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
@@ -383,6 +393,7 @@ class TurboSerialport {
     }
   }
 
+  /// native api: isServiceStarted
   Future<bool> isServiceStarted() async {
     final String pigeonVar_channelName = 'dev.flutter.pigeon.flutter_turbo_serialport.TurboSerialport.isServiceStarted$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
@@ -410,6 +421,7 @@ class TurboSerialport {
     }
   }
 
+  /// native api: writeBytes
   Future<void> writeBytes(int deviceId, int portInterface, Uint8List message) async {
     final String pigeonVar_channelName = 'dev.flutter.pigeon.flutter_turbo_serialport.TurboSerialport.writeBytes$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
@@ -432,6 +444,7 @@ class TurboSerialport {
     }
   }
 
+  /// native api: writeString
   Future<void> writeString(int deviceId, int portInterface, String message) async {
     final String pigeonVar_channelName = 'dev.flutter.pigeon.flutter_turbo_serialport.TurboSerialport.writeString$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
@@ -454,6 +467,7 @@ class TurboSerialport {
     }
   }
 
+  /// native api: writeBase64
   Future<void> writeBase64(int deviceId, int portInterface, String message) async {
     final String pigeonVar_channelName = 'dev.flutter.pigeon.flutter_turbo_serialport.TurboSerialport.writeBase64$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
@@ -476,6 +490,7 @@ class TurboSerialport {
     }
   }
 
+  /// native api: writeHexString
   Future<void> writeHexString(int deviceId, int portInterface, String message) async {
     final String pigeonVar_channelName = 'dev.flutter.pigeon.flutter_turbo_serialport.TurboSerialport.writeHexString$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
@@ -502,6 +517,7 @@ class TurboSerialport {
 abstract class TurboSerialportListener {
   static const MessageCodec<Object?> pigeonChannelCodec = _PigeonCodec();
 
+  /// native api: serialportEvent
   void serialportEvent(SerialportEvent event);
 
   static void setUp(TurboSerialportListener? api, {BinaryMessenger? binaryMessenger, String messageChannelSuffix = '',}) {

@@ -11,10 +11,13 @@ import 'package:pigeon/pigeon.dart';
 ))
 @HostApi()
 abstract class TurboSerialport {
+  /// native api: addListener
   void addListener();
 
+  /// native api: removeListener
   void removeListener();
 
+  /// native api: init
   void init(
     bool autoConnect,
     int mode,
@@ -28,6 +31,7 @@ abstract class TurboSerialport {
     int flowControl,
   );
 
+  /// native api: setParams
   void setParams(
     int deviceId,
     String driver,
@@ -41,32 +45,46 @@ abstract class TurboSerialport {
   );
 
   @async
+
+  /// native api: listDevices
   List<SerialportDevice> listDevices();
 
+  /// native api: connect
   void connect(int deviceId);
 
+  /// native api: disconnect
   void disconnect(int deviceId);
 
   @async
+
+  /// native api: isConnected
   bool isConnected(int deviceId);
 
   @async
+
+  /// native api: isServiceStarted
   bool isServiceStarted();
 
+  /// native api: writeBytes
   void writeBytes(int deviceId, int portInterface, Uint8List message);
 
+  /// native api: writeString
   void writeString(int deviceId, int portInterface, String message);
 
+  /// native api: writeBase64
   void writeBase64(int deviceId, int portInterface, String message);
 
+  /// native api: writeHexString
   void writeHexString(int deviceId, int portInterface, String message);
 }
 
 @FlutterApi()
 abstract class TurboSerialportListener {
+  /// native api: serialportEvent
   void serialportEvent(SerialportEvent event);
 }
 
+/// native api: SerialportEvent
 class SerialportEvent {
   String? type;
   int? deviceId;
@@ -77,6 +95,7 @@ class SerialportEvent {
   Uint8List? dataList;
 }
 
+/// native api: SerialportDevice
 class SerialportDevice {
   bool? isSupported;
   int? deviceId;
