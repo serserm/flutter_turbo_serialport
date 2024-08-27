@@ -1,5 +1,8 @@
+import 'dart:async';
 import 'dart:typed_data';
 
+import 'device.dart';
+import 'event_listener.dart';
 import 'turbo_serialport.g.dart';
 import 'types/types.dart';
 
@@ -17,16 +20,14 @@ class SerialportController extends TurboSerialportListener {
   }
 
   final TurboSerialport _api = TurboSerialport();
-  final List<EventListener> _listeners = [];
+  final EventListener _listener = EventListener();
 
   @override
   void serialportEvent(SerialportEvent event) {
-    for (var listener in List<EventListener>.from(_listeners)) {
-      try {
-        listener(event);
-      } catch (err) {
-        rethrow;
-      }
+    try {
+      _listener.call(event);
+    } catch (err) {
+      rethrow;
     }
   }
 
@@ -49,13 +50,34 @@ class SerialportController extends TurboSerialportListener {
     );
   }
 
-  Function addListener(EventListener listener) {
-    _listeners.add(listener);
-    _api.addListener();
+  Function addListeners({
+    OnReadData? onReadData,
+    OnError? onError,
+    OnConnected? onConnected,
+    OnDisconnected? onDisconnected,
+    OnDeviceAttached? onDeviceAttached,
+    OnDeviceDetached? onDeviceDetached,
+  }) {
+    if (_listener.add(
+      onReadData: onReadData,
+      onError: onError,
+      onConnected: onConnected,
+      onDisconnected: onDisconnected,
+      onDeviceAttached: onDeviceAttached,
+      onDeviceDetached: onDeviceDetached,
+    )) {
+      _api.addListener();
+    }
 
     return () {
-      if (_listeners.contains(listener)) {
-        _listeners.remove(listener);
+      if (_listener.remove(
+        onReadData: onReadData,
+        onError: onError,
+        onConnected: onConnected,
+        onDisconnected: onDisconnected,
+        onDeviceAttached: onDeviceAttached,
+        onDeviceDetached: onDeviceDetached,
+      )) {
         _api.removeListener();
       }
     };
@@ -75,8 +97,9 @@ class SerialportController extends TurboSerialportListener {
     );
   }
 
-  Future<List<SerialportDevice?>> listDevices() {
-    return _api.listDevices();
+  Future<List<Device>> listDevices() async {
+    List<SerialportDevice?> res = await _api.listDevices();
+    return res.cast<Device>();
   }
 
   void connect({int? deviceId}) {

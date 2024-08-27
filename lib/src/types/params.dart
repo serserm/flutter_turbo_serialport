@@ -87,6 +87,17 @@ enum Mode {
 }
 
 class Params {
+  Params({
+    this.driver,
+    this.portInterface,
+    this.baudRate,
+    this.dataBit,
+    this.stopBit,
+    this.parity,
+    this.flowControl,
+    this.returnedDataType,
+  });
+
   DriverType? driver;
   int? portInterface;
   BaudRate? baudRate;
