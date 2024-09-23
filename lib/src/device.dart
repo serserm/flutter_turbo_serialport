@@ -4,6 +4,38 @@ import 'serialport_controller.dart';
 import 'turbo_serialport.g.dart';
 
 class Device extends SerialportDevice {
+  Device({
+    super.isSupported,
+    super.deviceId,
+    super.deviceName,
+    super.deviceClass,
+    super.deviceSubclass,
+    super.deviceProtocol,
+    super.vendorId,
+    super.productId,
+    super.manufacturerName,
+    super.productName,
+    super.serialNumber,
+    super.interfaceCount,
+  });
+
+  factory Device.from(SerialportDevice device) {
+    return Device(
+      isSupported: device.isSupported,
+      deviceId: device.deviceId,
+      deviceName: device.deviceName,
+      deviceClass: device.deviceClass,
+      deviceSubclass: device.deviceSubclass,
+      deviceProtocol: device.deviceProtocol,
+      vendorId: device.vendorId,
+      productId: device.productId,
+      manufacturerName: device.manufacturerName,
+      productName: device.productName,
+      serialNumber: device.serialNumber,
+      interfaceCount: device.interfaceCount,
+    );
+  }
+
   void connect() {
     SerialportController().connect(
       deviceId: deviceId,

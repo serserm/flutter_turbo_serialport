@@ -1,14 +1,13 @@
 package com.serserm.turboserialport;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import android.content.Context;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.ArrayList;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Base64;
 import android.hardware.usb.UsbDevice;
 import com.felhr.usbserial.UsbSerialDevice;
@@ -20,6 +19,7 @@ public class TurboSerialportPlugin implements FlutterPlugin, PigeonSpec.TurboSer
   private SerialPortBuilder builder;
   private int listenerCount = 0;
   private PigeonSpec.TurboSerialportListener api;
+  private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
@@ -84,7 +84,7 @@ public class TurboSerialportPlugin implements FlutterPlugin, PigeonSpec.TurboSer
           break;
         }
 
-        api.serialportEvent(event, voidResult);
+        mainHandler.post(() -> api.serialportEvent(event, voidResult));
       }
     }
   };
@@ -106,7 +106,7 @@ public class TurboSerialportPlugin implements FlutterPlugin, PigeonSpec.TurboSer
       event.setErrorCode((long) code);
       event.setErrorMessage(message);
 
-      api.serialportEvent(event, voidResult);
+      mainHandler.post(() -> api.serialportEvent(event, voidResult));
     }
   }
 
@@ -116,7 +116,7 @@ public class TurboSerialportPlugin implements FlutterPlugin, PigeonSpec.TurboSer
       event.setType(type);
       event.setDeviceId((long) deviceId);
 
-      api.serialportEvent(event, voidResult);
+      mainHandler.post(() -> api.serialportEvent(event, voidResult));
     }
   }
 
@@ -127,7 +127,7 @@ public class TurboSerialportPlugin implements FlutterPlugin, PigeonSpec.TurboSer
       event.setDeviceId((long) deviceId);
       event.setPortInterface((long) portInterface);
 
-      api.serialportEvent(event, voidResult);
+      mainHandler.post(() -> api.serialportEvent(event, voidResult));
     }
   }
 
@@ -158,10 +158,6 @@ public class TurboSerialportPlugin implements FlutterPlugin, PigeonSpec.TurboSer
 
   /********************************** CONVERTING **************************************/
 
-  private int unsignedByteToInt(byte value) {
-    return value & 0xFF;
-  }
-
   private String bytesToHex(byte[] bytes) {
     char[] chars = new char[bytes.length * 2];
     for (int j = 0, l = bytes.length; j < l; j++) {
@@ -188,11 +184,11 @@ public class TurboSerialportPlugin implements FlutterPlugin, PigeonSpec.TurboSer
   }
 
   private byte[] Base64ToBytes(String message) {
-    return (byte[]) Base64.decode(message, Base64.DEFAULT);
+    return Base64.decode(message, Base64.DEFAULT);
   }
 
   private byte[] StringToBytes(String message) {
-    return (byte[]) message.getBytes(StandardCharsets.UTF_8);
+    return message.getBytes(StandardCharsets.UTF_8);
   }
 
   /********************************** FLUTTER **************************************/

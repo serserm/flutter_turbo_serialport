@@ -22,7 +22,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late Function _subscribe;
-  Map<int, String> _allDevices = {};
+  List<Device> _allDevices = [];
   String _device = '';
   String _data = '';
 
@@ -46,18 +46,15 @@ class _HomePageState extends State<HomePage> {
         flowControl: FlowControl.$off,
       ),
     );
-    _subscribe = SerialportController().addListeners(
-      onReadData: onReadData,
-      onError: onError,
-      onConnected: onConnected,
-      onDisconnected: onDisconnected,
-      onDeviceAttached: onSearch,
-      onDeviceDetached: onSearch,
-    );
 
-    SerialportController().isServiceStarted().then((bool res) {
-      debugPrint(
-        'isServiceStarted: $res',
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _subscribe = SerialportController().addListeners(
+        onReadData: onReadData,
+        onError: onError,
+        onConnected: onConnected,
+        onDisconnected: onDisconnected,
+        onDeviceAttached: onSearch,
+        onDeviceDetached: onSearch,
       );
     });
   }
@@ -109,12 +106,8 @@ class _HomePageState extends State<HomePage> {
     int? deviceId,
   }) {
     SerialportController().listDevices().then((List<Device> res) {
-      Map<int, String> devices = {};
-      for (Device device in res) {
-        devices[device.deviceId!] = device.deviceName ?? 'null';
-      }
       setState(() {
-        _allDevices = devices;
+        _allDevices = res;
       });
     });
   }
@@ -147,12 +140,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   connect({
-    int? deviceId,
+    required Device device,
   }) {
     return () {
-      SerialportController().connect(
-        deviceId: deviceId,
-      );
+      device.isConnected().then((bool res) {
+        if (res) {
+          device.writeString(message: '${Random().nextDouble()}');
+        } else {
+          device.connect();
+        }
+      });
     };
   }
 
@@ -170,8 +167,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    Iterable deviceList = _allDevices.keys;
-
     return Scaffold(
       appBar: AppBar(
         title: Column(
@@ -180,7 +175,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: onSearch,
               child: Center(
                 child: Text(
-                  'Search: ${deviceList.length}\n$_device',
+                  'Search: ${_allDevices.length}\n$_device',
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -188,22 +183,37 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      body: ListView.builder(
-        itemCount: deviceList.length,
-        itemBuilder: (BuildContext context, int index) {
-          final int key = deviceList.elementAt(index);
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: _allDevices.length,
+              itemBuilder: (BuildContext context, int index) {
+                final Device device = _allDevices.elementAt(index);
 
-          return ListTile(
-            title: TextButton(
-              onPressed: connect(deviceId: key),
-              child: Center(
-                child: Text(
-                  'Connect id: $key',
-                ),
+                return ListTile(
+                  title: TextButton(
+                    onPressed: connect(device: device),
+                    child: Center(
+                      child: Text(
+                        'Connect id: ${device.deviceId}',
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 16),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Text(
+                _data,
+                textAlign: TextAlign.center,
               ),
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
