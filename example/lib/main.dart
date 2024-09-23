@@ -46,18 +46,15 @@ class _HomePageState extends State<HomePage> {
         flowControl: FlowControl.$off,
       ),
     );
-    _subscribe = SerialportController().addListeners(
-      onReadData: onReadData,
-      onError: onError,
-      onConnected: onConnected,
-      // onDisconnected: onDisconnected,
-      onDeviceAttached: onSearch,
-      // onDeviceDetached: onSearch,
-    );
 
-    SerialportController().isServiceStarted().then((bool res) {
-      debugPrint(
-        'isServiceStarted: $res',
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _subscribe = SerialportController().addListeners(
+        onReadData: onReadData,
+        onError: onError,
+        onConnected: onConnected,
+        onDisconnected: onDisconnected,
+        onDeviceAttached: onSearch,
+        onDeviceDetached: onSearch,
       );
     });
   }
@@ -143,12 +140,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   connect({
-    int? deviceId,
+    required Device device,
   }) {
     return () {
-      SerialportController().connect(
-        deviceId: deviceId,
-      );
+      device.isConnected().then((bool res) {
+        if (res) {
+          device.writeString(message: '${Random().nextDouble()}');
+        } else {
+          device.connect();
+        }
+      });
     };
   }
 
@@ -182,22 +183,37 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      body: ListView.builder(
-        itemCount: _allDevices.length,
-        itemBuilder: (BuildContext context, int index) {
-          final Device device = _allDevices.elementAt(index);
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: _allDevices.length,
+              itemBuilder: (BuildContext context, int index) {
+                final Device device = _allDevices.elementAt(index);
 
-          return ListTile(
-            title: TextButton(
-              onPressed: connect(deviceId: device.deviceId),
-              child: Center(
-                child: Text(
-                  'Connect id: ${device.deviceId}',
-                ),
+                return ListTile(
+                  title: TextButton(
+                    onPressed: connect(device: device),
+                    child: Center(
+                      child: Text(
+                        'Connect id: ${device.deviceId}',
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 16),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Text(
+                _data,
+                textAlign: TextAlign.center,
               ),
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
