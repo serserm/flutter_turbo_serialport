@@ -22,7 +22,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late Function _subscribe;
-  Map<int, String> _allDevices = {};
+  List<Device> _allDevices = [];
   String _device = '';
   String _data = '';
 
@@ -50,9 +50,9 @@ class _HomePageState extends State<HomePage> {
       onReadData: onReadData,
       onError: onError,
       onConnected: onConnected,
-      onDisconnected: onDisconnected,
+      // onDisconnected: onDisconnected,
       onDeviceAttached: onSearch,
-      onDeviceDetached: onSearch,
+      // onDeviceDetached: onSearch,
     );
 
     SerialportController().isServiceStarted().then((bool res) {
@@ -109,12 +109,8 @@ class _HomePageState extends State<HomePage> {
     int? deviceId,
   }) {
     SerialportController().listDevices().then((List<Device> res) {
-      Map<int, String> devices = {};
-      for (Device device in res) {
-        devices[device.deviceId!] = device.deviceName ?? 'null';
-      }
       setState(() {
-        _allDevices = devices;
+        _allDevices = res;
       });
     });
   }
@@ -170,8 +166,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    Iterable deviceList = _allDevices.keys;
-
     return Scaffold(
       appBar: AppBar(
         title: Column(
@@ -180,7 +174,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: onSearch,
               child: Center(
                 child: Text(
-                  'Search: ${deviceList.length}\n$_device',
+                  'Search: ${_allDevices.length}\n$_device',
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -189,16 +183,16 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       body: ListView.builder(
-        itemCount: deviceList.length,
+        itemCount: _allDevices.length,
         itemBuilder: (BuildContext context, int index) {
-          final int key = deviceList.elementAt(index);
+          final Device device = _allDevices.elementAt(index);
 
           return ListTile(
             title: TextButton(
-              onPressed: connect(deviceId: key),
+              onPressed: connect(deviceId: device.deviceId),
               child: Center(
                 child: Text(
-                  'Connect id: $key',
+                  'Connect id: ${device.deviceId}',
                 ),
               ),
             ),

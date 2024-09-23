@@ -155,7 +155,7 @@ class SerialportController extends TurboSerialportListener {
   /// ```
   Future<List<Device>> listDevices() async {
     List<SerialportDevice?> res = await _api.listDevices();
-    return res.cast<Device>();
+    return res.whereType<SerialportDevice>().map(Device.from).toList();
   }
 
   /// ## Example
